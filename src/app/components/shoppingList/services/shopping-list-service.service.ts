@@ -23,4 +23,10 @@ export class ShoppingListServiceService {
     //update the copy of ingredients avaliable to the app
     this.ingredientsChanged.emit(this.ingredients.slice());
   }
+
+  addIngredients(ingredients: Ingredient[]){
+    this.ingredients.push(...ingredients);
+    //update the copy of ingredients avaliable to the app
+    this.ingredientsChanged.emit(this.ingredients.slice());
+  }
 }
