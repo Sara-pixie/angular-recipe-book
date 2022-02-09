@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Alert, AlertService } from 'src/app/shared/alert/alert.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
@@ -15,7 +16,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   constructor(private dataStorageService: DataStorageService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.subscription = this.authService.getUser().subscribe(user => {
@@ -42,7 +44,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // Sign-out successful.
       })
       .catch((error) => {
-        console.log('An error ocurred! ' + error.message);
+        const newAlert: Alert = new Alert(
+          'An error ocurred! ' + error.message,
+          'error',
+          this.alertService.createID());
+        this.alertService.addAlert(newAlert);
       });
   }
 

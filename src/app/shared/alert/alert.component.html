@@ -1,8 +1,5 @@
-<div class="backdrop" (click)="onClose()"></div>
-<div class="alert-box" [ngClass]="alertType">
-    <p>{{ message }}</p>
-    <div class="alert-box-actions">
-        <button class="btn btn-secondary" 
-        (click)="onClose()">Close</button>
-    </div>
+<div class="alert-box" [ngClass]="alert.alertType">
+    <div class="close-alert-box" (click)="onClose()">X</div>
+    <p>{{ alert.message }}</p>
+    <div class="alert-box-actions"></div>
 </div>

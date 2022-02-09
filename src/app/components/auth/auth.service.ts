@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { Alert, AlertService } from 'src/app/shared/alert/alert.service';
 import { User } from './user.model';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class AuthService {
   private tokenExpirationTimer: any;
 
   constructor(private afAuth: AngularFireAuth,
-              private router: Router) { 
+              private router: Router,
+              private alertService: AlertService) { 
 
     this.afAuth.authState.subscribe(user => {
       let userInfo: User;
@@ -26,6 +28,11 @@ export class AuthService {
           new Date(storedInfo.stsTokenManager.expirationTime));
         const expiresIn: number = new Date(storedInfo.stsTokenManager.expirationTime).getTime() - new Date().getTime();
         this.autoLogout(expiresIn);
+        const newAlert: Alert = new Alert(
+          'You have been logged in as ' + storedInfo.email,
+          'info',
+          this.alertService.createID());
+        this.alertService.addAlert(newAlert);
       } else {
         localStorage.removeItem('user');
         userInfo = null;
@@ -48,6 +55,11 @@ export class AuthService {
     }
     this.tokenExpirationTimer = null;
     this.router.navigate(['/auth']);
+    const newAlert: Alert = new Alert(
+        'You have been signed out',
+        'info',
+        this.alertService.createID());
+      this.alertService.addAlert(newAlert);
     return this.afAuth.signOut();
   }
 
@@ -74,6 +86,11 @@ export class AuthService {
     this.tokenExpirationTimer = null;
     this.tokenExpirationTimer = setTimeout(() => {
       this.signOut();
+      const newAlert: Alert = new Alert(
+        'Your session has ended, please log in again.',
+        'info',
+        this.alertService.createID());
+      this.alertService.addAlert(newAlert);
     }, expirationDuration);
   }
 }

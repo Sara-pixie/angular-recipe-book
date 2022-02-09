@@ -1,4 +1,7 @@
 <app-header></app-header>
+<div class="alerts" *ngIf="alerts">
+  <app-alert *ngFor="let alert of alerts" [alert]="alert"></app-alert>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-md-12">

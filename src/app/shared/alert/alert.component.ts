@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { Alert, AlertService } from './alert.service';
 
 @Component({
   selector: 'app-alert',
@@ -7,19 +8,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class AlertComponent implements OnInit {
   @Input()
-  message: string;
-  @Input()
-  alertType: string;
-  @Output()
-  close = new EventEmitter();
+  alert: Alert;
 
-  constructor() { }
+  constructor(private alertService: AlertService) { }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.onClose();
+    }, 10000);
   }
 
   onClose(){
-    this.close.emit(null);
+    this.alertService.removeAlert(this.alert);
   }
 
 }
