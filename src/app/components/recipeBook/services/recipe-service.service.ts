@@ -20,11 +20,17 @@ export class RecipeServiceService {
   }
   
   getRecipes(){
+    if(!this.recipes){
+      return;
+    }
     //get a copy of recipes
     return this.recipes.slice();
   }
 
   getRecipe(index: number){
+    if(!this.recipes){
+      return;
+    }
     return this.recipes[index];
   }
 
